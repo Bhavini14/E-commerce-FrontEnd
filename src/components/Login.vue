@@ -19,6 +19,8 @@ const handleLogin = async () => {
     });
 
     localStorage.setItem("token", response.data.token);
+    const refreshtoken = response.data.refreshToken;
+    localStorage.setItem("refreshToken", refreshtoken);
     await router.push('/dashboard');
   } catch (error: any) {
     debugger

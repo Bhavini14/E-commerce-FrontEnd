@@ -6,7 +6,10 @@ import ContactUs from "../components/ContactUs.vue";
 import AboutUs from "../components/AboutUs.vue";
 import Role from "../components/Role.vue";
 import MainView from "../components/MainView.vue";
-import Product from "../components/Product.vue";
+import Product from "../components/Products/Product.vue";
+import AddProduct from "../components/Products/AddProduct.vue";
+import ViewProduct from "../components/Products/ViewProduct.vue";
+import EditProduct from "../components/Products/EditProduct.vue";
 
 const routes = [
   {
@@ -27,6 +30,9 @@ const routes = [
       { path: "AboutUs", component: AboutUs },
       { path: "ContactUs", component: ContactUs },
       { path: "Role", component: Role },
+      { path: "AddProduct", component: AddProduct },
+      { path: "ViewProduct", component: ViewProduct },
+      { path: "EditProduct/:id", component: EditProduct },
     ],
   },
 ];
