@@ -21,7 +21,7 @@
           <div v-if="showProductMenu" class="submenu">
             <RouterLink to="/dashboard/AddProduct">Add Product</RouterLink>
             <RouterLink to="/dashboard/ViewProduct">View Product</RouterLink>
-            <RouterLink to="/dashboard/EditProduct">Edit Product</RouterLink>
+            <!-- <RouterLink to="/dashboard/EditProduct">Edit Product</RouterLink> -->
           </div>
         </div>
         <button class="logout-btn" @click="handleLogout">Logout</button>

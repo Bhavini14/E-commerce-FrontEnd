@@ -7,6 +7,7 @@ import type { CategoryModal } from '../../Modal/CategoryModal';
 import router from '../../router';
 
 const product = ref<AddProductRequest>({
+    id: 0,
     name: "",
     description: "",
     price: 0,
@@ -20,7 +21,6 @@ const errorMessage = ref("");
 const categories = ref<CategoryModal[]>([]);
 
 const SaveProduct = async () => {
-debugger
     try {
 
         //Add Product
@@ -30,6 +30,7 @@ debugger
 
         // Reset form
         product.value = {
+            id: 0,
             name: "",
             description: "",
             price: 0,
