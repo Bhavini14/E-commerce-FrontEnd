@@ -10,7 +10,6 @@ const router = useRouter();
 const errorMessage = ref("");
 
 const handleLogin = async () => {
-  debugger
   loading.value = true;
   try {
     const response = await login({
@@ -23,7 +22,6 @@ const handleLogin = async () => {
     localStorage.setItem("refreshToken", refreshtoken);
     await router.push('/dashboard');
   } catch (error: any) {
-    debugger
     if (error.response?.data === 'invalidusername') {
       errorMessage.value = 'Invalid username or password';
     } else {

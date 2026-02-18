@@ -40,7 +40,6 @@ import router from '../router';
 import { logout } from '../Services/auth.service';
 
 const logoutmessage = ref("");
-debugger
 const handleLogout = async () => {
   const response = await logout();
   logoutmessage.value = response.data;

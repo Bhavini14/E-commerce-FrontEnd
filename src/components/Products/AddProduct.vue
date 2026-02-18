@@ -5,6 +5,7 @@ import { AddProducts } from '../../Services/product.service';
 import { getCategories } from '../../Services/category.service';
 import type { CategoryModal } from '../../Modal/CategoryModal';
 import router from '../../router';
+import ViewProduct from './ViewProduct.vue';
 
 const product = ref<AddProductRequest>({
     id: 0,
@@ -19,6 +20,7 @@ const product = ref<AddProductRequest>({
 const message = ref("");
 const errorMessage = ref("");
 const categories = ref<CategoryModal[]>([]);
+const passvalue = ref("View Product data");
 
 const SaveProduct = async () => {
     try {
@@ -41,7 +43,6 @@ const SaveProduct = async () => {
     } catch (error) {
         message.value = "Error saving product: " + error;
     }
-
 }
 
 const fetchCategories = async () => {
@@ -52,7 +53,6 @@ const fetchCategories = async () => {
     errorMessage.value = 'Failed to load categories'
   } 
 }
-
 
 const onFileChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
@@ -88,7 +88,7 @@ onMounted(fetchCategories);
                 <input type="number" v-model="product.quantity" required />
             </div>            
             <div class="form-group">
-                <label for="categoryId">Category ID</label>
+                <label for="categoryId">Category</label>
                 <select v-model="product.categoryId" required>
                     <option value="" disabled>Select Category</option>
                     <option v-for="category in categories" :key="category.id" :value="category.id">
@@ -105,6 +105,10 @@ onMounted(fetchCategories);
         </form>
 
     </div>
+
+    <ViewProduct
+    :message= "passvalue"/>
+
 </template>
 
 

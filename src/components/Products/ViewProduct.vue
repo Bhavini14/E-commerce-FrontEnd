@@ -30,8 +30,12 @@ import { getProducts } from "../../Services/product.service";
 const router = useRouter();
 const products = ref<any[]>([]);
 const loading = ref(false);
+const props= defineProps<{
+  message: String
+}>();
 
 const fetchProducts = async () => {
+    console.log(props.message);
     loading.value = true;
     try {
         const res = await getProducts();
