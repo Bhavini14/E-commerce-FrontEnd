@@ -12,9 +12,7 @@
         <RouterLink to="/dashboard/Role" active-class="active">Role</RouterLink>
         <!-- <RouterLink to="/dashboard/Product" active-class="active">Product</RouterLink> -->
         <!-- <RouterLink to="/dashboard/AddProduct" active-class="active">Add Product</RouterLink> -->
-
-
-
+         
         <div class="menu-item" @mouseenter="showProductMenu = true" @mouseleave="showProductMenu = false">
           <span class="menu-title">Product ▾</span>
 

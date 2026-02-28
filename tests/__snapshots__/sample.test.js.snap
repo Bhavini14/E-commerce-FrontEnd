@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Snapshot Test > matches snapshot 1`] = `
+{
+  "age": 22,
+  "name": "Bhavini",
+}
+`;
