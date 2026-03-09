@@ -1,22 +1,47 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { login } from '../Services/auth.service';
 import { useRouter } from 'vue-router';
+import { useUserStore } from '../stores/userStore';
 
 const userName = ref("");
 const password = ref("");
 const loading = ref(false);
 const router = useRouter();
 const errorMessage = ref("");
+const userStore = useUserStore();
+const userNameError = ref("");
+const passwordError = ref("");
+
+const validationForm = () => {
+  let isValid = true;
+  userNameError.value = "";
+  passwordError.value = "";
+
+  if (!userName.value) {
+    userNameError.value = "Username is required";
+    isValid = false;
+  }
+
+  if (!password.value) {
+    passwordError.value = "Password is required";
+    isValid = false;
+  }
+
+  return isValid;
+}
 
 const handleLogin = async () => {
+  if (!validationForm()) {
+    return;
+  }
   loading.value = true;
   try {
     const response = await login({
       userName: userName.value,
       password: password.value
     });
-
+    userStore.setUsername(userName.value);
     localStorage.setItem("token", response.data.token);
     const refreshtoken = response.data.refreshToken;
     localStorage.setItem("refreshToken", refreshtoken);
@@ -31,6 +56,26 @@ const handleLogin = async () => {
     loading.value = false;
   }
 }
+
+//======================= insted of @input="userNameError = ''" (Second Way) ========================
+// watch(userName, () => {  
+//   userNameError.value = "";  
+// });
+// watch(password, () => {  
+//   passwordError.value = "";  
+// });
+
+const users = ref([
+  "Bhavini",
+  "Prajapati"
+])
+
+const search = ref("");
+
+const filteredUsers = computed(() => {
+  return users.value.filter(user => user.toLowerCase().includes(search.value.toLowerCase()));
+})
+
 </script>
 
 <template>
@@ -41,12 +86,14 @@ const handleLogin = async () => {
 
       <div class="form-group">
         <label>Username</label>
-        <input v-model="userName" type="text" placeholder="Enter username" />
+        <input v-model="userName" type="text" placeholder="Enter username"  @input="userNameError = ''" />
+        <p v-if="userNameError" class="error">{{ userNameError }}</p>
       </div>
 
       <div class="form-group">
         <label>Password</label>
-        <input v-model="password" type="password" placeholder="Enter password" />
+        <input v-model="password" type="password" placeholder="Enter password" @input="passwordError = ''" />
+        <p v-if="passwordError" class="error">{{ passwordError }}</p>
       </div>
 
       <button class="login-btn" @click="handleLogin" :disabled="loading">
@@ -58,6 +105,9 @@ const handleLogin = async () => {
       </p>
     </div>
   </div>
+  <li v-for="user in filteredUsers" :key="user">
+    {{ user }}
+  </li>
 </template>
 
 <style scoped>
@@ -143,7 +193,7 @@ input:focus {
 /* Error */
 .error {
   margin-top: 14px;
-  text-align: center;
+  /* text-align: center; */
   color: #dc2626;
   font-size: 13px;
 }

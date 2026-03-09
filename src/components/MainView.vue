@@ -24,6 +24,7 @@
         </div>
         <button class="logout-btn" @click="handleLogout">Logout</button>
       </nav>
+      <span>{{ userStore.username }}</span>
     </header>
 
     <main class="content">
@@ -36,7 +37,9 @@
 import { ref } from 'vue';
 import router from '../router';
 import { logout } from '../Services/auth.service';
+import { useUserStore } from '../stores/userStore';
 
+const userStore = useUserStore();
 const logoutmessage = ref("");
 const handleLogout = async () => {
   const response = await logout();
