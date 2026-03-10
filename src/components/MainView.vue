@@ -37,7 +37,7 @@
 import { ref } from 'vue';
 import router from '../router';
 import { logout } from '../Services/auth.service';
-import { useUserStore } from '../stores/userStore';
+import { useUserStore } from '../Stores/userStore';
 
 const userStore = useUserStore();
 const logoutmessage = ref("");

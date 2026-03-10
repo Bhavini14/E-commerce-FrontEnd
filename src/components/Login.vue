@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { login } from '../Services/auth.service';
 import { useRouter } from 'vue-router';
-import { useUserStore } from '../stores/userStore';
+import { useUserStore } from '../Stores/userStore';
 
 const userName = ref("");
 const password = ref("");
