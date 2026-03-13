@@ -22,7 +22,18 @@ const errorMessage = ref("");
 const categories = ref<CategoryModal[]>([]);
 const passvalue = ref("View Product data");
 
+// Error refs for validation
+const nameError = ref("");
+const descriptionError = ref("");
+const priceError = ref("");
+const quantityError = ref("");
+const categoryError = ref("");
+const imageError = ref("");
+
 const SaveProduct = async () => {
+   if (!validateForm()) {
+    return;
+  }
     try {
 
         //Add Product
@@ -64,6 +75,66 @@ const onFileChange = (event: Event) => {
     }
 
 }
+
+const validateForm = () => {
+    let isValid = true;
+
+    // Clear previous errors
+    nameError.value = "";
+    descriptionError.value = "";
+    priceError.value = "";
+    quantityError.value = "";
+    categoryError.value = "";
+    imageError.value = "";
+
+    // Validate product name
+    if (!product.value.name.trim()) {
+        nameError.value = "Product name is required";
+        isValid = false;
+    } else if (product.value.name.trim().length < 2) {
+        nameError.value = "Product name must be at least 2 characters";
+        isValid = false;
+    }
+
+    // Validate description
+    if (!product.value.description.trim()) {
+        descriptionError.value = "Description is required";
+        isValid = false;
+    } else if (product.value.description.trim().length < 10) {
+        descriptionError.value = "Description must be at least 10 characters";
+        isValid = false;
+    }
+
+    // Validate price
+    if (!product.value.price || product.value.price <= 0) {
+        priceError.value = "Price must be greater than 0";
+        isValid = false;
+    }
+
+    // Validate quantity
+    if (!product.value.quantity || product.value.quantity < 0) {
+        quantityError.value = "Quantity cannot be negative";
+        isValid = false;
+    }
+
+    // Validate category
+    if (!product.value.categoryId || product.value.categoryId === 0) {
+        categoryError.value = "Please select a category";
+        isValid = false;
+    }
+
+    // Validate image (optional, but if selected, check file type)
+    if (product.value.image) {
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+        if (!allowedTypes.includes(product.value.image.type)) {
+            imageError.value = "Please select a valid image file (JPEG, PNG, GIF)";
+            isValid = false;
+        }
+    }
+
+    return isValid;
+}
+
 onMounted(fetchCategories);
 
 </script>
@@ -73,32 +144,38 @@ onMounted(fetchCategories);
         <form @submit.prevent="SaveProduct">
             <div class="form-group">
                 <label for="productName">Product Name</label>
-                <input type="text" v-model="product.name" required />
+                <input type="text" v-model="product.name" @input="nameError = ''" />
+                <p v-if="nameError" class="error">{{ nameError }}</p>
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea v-model="product.description" required></textarea>
+                <textarea v-model="product.description" @input="descriptionError = ''"></textarea>
+                <p v-if="descriptionError" class="error">{{ descriptionError }}</p>
             </div>
             <div class="form-group">
                 <label for="price">Price</label>
-                <input type="number" v-model="product.price" required />
+                <input type="number" v-model.number="product.price" @input="priceError = ''" />
+                <p v-if="priceError" class="error">{{ priceError }}</p>
             </div>
             <div class="form-group  ">
                 <label for="quantity">Quantity</label>
-                <input type="number" v-model="product.quantity" required />
+                <input type="number" v-model.number="product.quantity" @input="quantityError = ''" />
+                <p v-if="quantityError" class="error">{{ quantityError }}</p>
             </div>            
             <div class="form-group">
                 <label for="categoryId">Category</label>
-                <select v-model="product.categoryId" required>
+                <select v-model="product.categoryId" @change="categoryError = ''">
                     <option value="" disabled>Select Category</option>
                     <option v-for="category in categories" :key="category.id" :value="category.id">
                         {{ category.name }}
                     </option>
-                </select>              
+                </select>
+                <p v-if="categoryError" class="error">{{ categoryError }}</p>
             </div>
             <div class="form-group">
                 <label>Image</label>
                 <input type="file" accept="image/*" @change="onFileChange" />
+                <p v-if="imageError" class="error">{{ imageError }}</p>
             </div>
 
             <button type="submit">Add Product</button>
@@ -185,10 +262,11 @@ button:active {
   transform: scale(0.98);
 }
 
-.message {
-  margin-top: 12px;
-  text-align: center;
-  font-weight: 600;
+.error {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-bottom: 0;
 }
 
 </style>
